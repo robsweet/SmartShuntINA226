@@ -263,14 +263,76 @@ void sensorSetShunt(uint16_t id) {
 }
 
 void setupSensor() {
-    // Default INA226 address is 0x40
-    gSensorInitialized = ina.begin(SENSOR_ADDRESS);
+    // // Default INA226 address is 0x40
+    // gSensorInitialized = ina.begin(SENSOR_ADDRESS);
 
-    // Check if the connection was successful, stop if not
-    if (!gSensorInitialized) {
-        SERIAL_DBG.println("Connection to sensor failed");
+    // // Check if the connection was successful, stop if not
+    // if (!gSensorInitialized) {
+    //     SERIAL_DBG.println("Connection to sensor failed");
 
+    // }
+
+
+    delayMicroseconds(1000);
+    SERIAL_DBG.println(".");
+    SERIAL_DBG.println(".");
+    SERIAL_DBG.println(".");
+    SERIAL_DBG.println(".");
+    SERIAL_DBG.println("Looking for sensors...");
+
+    if (ina.begin(0x40)) {
+        SERIAL_DBG.println("Connection to sensor at 0x40");
+        gSensorInitialized = true;
+    } else if (ina.begin(0x41)) {
+        SERIAL_DBG.println("Connection to sensor at 0x41");
+        gSensorInitialized = true;
+    } else if (ina.begin(0x42)) {
+        SERIAL_DBG.println("Connection to sensor at 0x42");
+        gSensorInitialized = true;
+    } else if (ina.begin(0x43)) {
+        SERIAL_DBG.println("Connection to sensor at 0x43");
+        gSensorInitialized = true;
+    } else if (ina.begin(0x44)) {
+        SERIAL_DBG.println("Connection to sensor at 0x44");
+        gSensorInitialized = true;
+    } else if (ina.begin(0x45)) {
+        SERIAL_DBG.println("Connection to sensor at 0x45");
+        gSensorInitialized = true;
+    } else if (ina.begin(0x46)) {
+        SERIAL_DBG.println("Connection to sensor at 0x46");
+        gSensorInitialized = true;
+    } else if (ina.begin(0x47)) {
+        SERIAL_DBG.println("Connection to sensor at 0x47");
+        gSensorInitialized = true;
+    } else if (ina.begin(0x48)) {
+        SERIAL_DBG.println("Connection to sensor at 0x48");
+        gSensorInitialized = true;
+    } else if (ina.begin(0x49)) {
+        SERIAL_DBG.println("Connection to sensor at 0x49");
+        gSensorInitialized = true;
+    } else if (ina.begin(0x4a)) {
+        SERIAL_DBG.println("Connection to sensor at 0x4a");
+        gSensorInitialized = true;
+    } else if (ina.begin(0x4b)) {
+        SERIAL_DBG.println("Connection to sensor at 0x4b");
+        gSensorInitialized = true;
+    } else if (ina.begin(0x4c)) {
+        SERIAL_DBG.println("Connection to sensor at 0x4c");
+        gSensorInitialized = true;
+    } else if (ina.begin(0x4d)) {
+        SERIAL_DBG.println("Connection to sensor at 0x4d");
+        gSensorInitialized = true;
+    } else if (ina.begin(0x4e)) {
+        SERIAL_DBG.println("Connection to sensor at 0x4e");
+        gSensorInitialized = true;
+    } else if (ina.begin(0x4f)) {
+        SERIAL_DBG.println("Connection to sensor at 0x4f");
+        gSensorInitialized = true;
     }
+    SERIAL_DBG.println("Done looking for sensors...");
+    delayMicroseconds(1000);
+
+
     // Configure INA226
     ina.configure(INA226_AVERAGES_64, INA226_BUS_CONV_TIME_2116US,
                     INA226_SHUNT_CONV_TIME_2116US, INA226_MODE_SHUNT_BUS_CONT);
@@ -345,22 +407,22 @@ void sensorLoop() {
         lastUpdate = now;
     }
 
-    SERIAL_DBG.print("Bus voltage:   ") ;
-    SERIAL_DBG.print(ina.readBusVoltage(), 7);
-    SERIAL_DBG.println(" V");
+    // SERIAL_DBG.print("Bus voltage:   ") ;
+    // SERIAL_DBG.print(ina.readBusVoltage(), 7);
+    // SERIAL_DBG.println(" V");
 
-    SERIAL_DBG.print("Bus power:     ");
-    SERIAL_DBG.print(ina.readBusPower(), 7);
-    SERIAL_DBG.println(" W");
+    // SERIAL_DBG.print("Bus power:     ");
+    // SERIAL_DBG.print(ina.readBusPower(), 7);
+    // SERIAL_DBG.println(" W");
 
-    SERIAL_DBG.print("Shunt voltage: ");
-    SERIAL_DBG.print(ina.readShuntVoltage(), 7);
-    SERIAL_DBG.println(" V");
+    // SERIAL_DBG.print("Shunt voltage: ");
+    // SERIAL_DBG.print(ina.readShuntVoltage(), 7);
+    // SERIAL_DBG.println(" V");
 
-    SERIAL_DBG.print("Shunt current: ");
-    SERIAL_DBG.print(ina.readShuntCurrent(), 7);
-    SERIAL_DBG.println(" A");
+    // SERIAL_DBG.print("Shunt current: ");
+    // SERIAL_DBG.print(ina.readShuntCurrent(), 7);
+    // SERIAL_DBG.println(" A");
 
-    SERIAL_DBG.println("");
+    // SERIAL_DBG.println("");
 
 }
