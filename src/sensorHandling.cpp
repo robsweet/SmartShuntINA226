@@ -11,6 +11,10 @@
 #define PIN_SCL SCL
 #define PIN_SDA SDA
 #define PIN_INTERRUPT 7
+#elif defined(ESP32)
+#define PIN_SCL SCL
+#define PIN_SDA SDA
+#define PIN_INTERRUPT 7
 #elif defined(ESP8266)
 #define PIN_SCL D1
 #define PIN_SDA D2
@@ -20,8 +24,9 @@
 #endif
 
 
-static const float VoltageCalibrationFactor = 2.93754;
-static const float CurrentCalibrationFactor = 1.0285;
+// static const float VoltageCalibrationFactor = 2.93754;
+static const float VoltageCalibrationFactor = 0.9791;
+static const float CurrentCalibrationFactor = 1.18;
 struct Shunt {
   float resistance;
   float maxCurrent;
@@ -259,12 +264,12 @@ void sensorSetShunt(uint16_t id) {
 
 void setupSensor() {
     // Default INA226 address is 0x40
-    gSensorInitialized = ina.begin();
+    gSensorInitialized = ina.begin(SENSOR_ADDRESS);
 
     // Check if the connection was successful, stop if not
     if (!gSensorInitialized) {
         SERIAL_DBG.println("Connection to sensor failed");
-        
+
     }
     // Configure INA226
     ina.configure(INA226_AVERAGES_64, INA226_BUS_CONV_TIME_2116US,
@@ -339,8 +344,8 @@ void sensorLoop() {
         gBattery.updateStats(now);
         lastUpdate = now;
     }
-/*
-     SERIAL_DBG.print("Bus voltage:   ") ;
+
+    SERIAL_DBG.print("Bus voltage:   ") ;
     SERIAL_DBG.print(ina.readBusVoltage(), 7);
     SERIAL_DBG.println(" V");
 
@@ -357,5 +362,5 @@ void sensorLoop() {
     SERIAL_DBG.println(" A");
 
     SERIAL_DBG.println("");
-*/    
+
 }

@@ -26,6 +26,8 @@ extern char gCustomName[64];
 
 #define UPDATE_INTERVAL 990
 
+#define SENSOR_ADDRESS 0x40
+
 // How many ensors can we handle...
 #ifdef MAX_SENSORS 
 #if (MAX_SENSORS > SOC_UART_NUM)
