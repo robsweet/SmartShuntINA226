@@ -49,7 +49,7 @@
 const char wifiInitialApPassword[] = "12345678";
 
 // -- Configuration specific key. The value should be modified if config structure was changed.
-#define CONFIG_VERSION "B2"
+#define CONFIG_VERSION "B3"
 
 // -- When CONFIG_PIN is pulled to ground on startup, the Thing will use the initial
 //      password to buld an AP. (E.g. in case of lost password)
@@ -92,6 +92,9 @@ uint16_t gFullDelayS;
 
 float gShuntResistancemR;
 
+float gVoltageCalibrationFactor;
+float gCurrentCalibrationFactor;
+
 uint16_t gMaxCurrentA;
 
 uint16_t gModbusId;
@@ -123,6 +126,19 @@ iotwebconf::UIntTParameter<uint16_t> maxCurrent =
   placeholder("1..65535").
   build();
 
+iotwebconf::FloatTParameter voltageCalibrationFactor =
+   iotwebconf::Builder<iotwebconf::FloatTParameter>("calV").
+   label("Voltage calibration factor [multiplier]").
+   defaultValue(1.00f).
+   placeholder("e.g. 1.0").
+   build();
+
+iotwebconf::FloatTParameter currentCalibrationFactor =
+   iotwebconf::Builder<iotwebconf::FloatTParameter>("calA").
+   label("Current calibration factor [multiplier]").
+   defaultValue(1.00f).
+   placeholder("e.g. 1.0").
+   build();
 
 IotWebConfParameterGroup shuntGroup = IotWebConfParameterGroup("ShuntConf","Smart shunt");
 
@@ -220,6 +236,8 @@ build();
 void wifiSetShuntVals() {
     shuntResistance.value() = gShuntResistancemR;
     maxCurrent.value() = gMaxCurrentA;
+    voltageCalibrationFactor.value() = gVoltageCalibrationFactor;
+    currentCalibrationFactor.value() = gCurrentCalibrationFactor;
 }
 
 void wifiSetModbusId() {
@@ -264,9 +282,13 @@ String s = "<!DOCTYPE html><html lang=\"en\"><head><meta name=\"viewport\" conte
 void wifiSetup()
 {
   shuntResistance.customHtml = "min='0.001' max='10.0' step='0.001'";
+  voltageCalibrationFactor.customHtml = "min='0.001' max='10.0' step='0.001'";
+  currentCalibrationFactor.customHtml = "min='0.001' max='10.0' step='0.001'";
 
   sysConfGroup.addItem(&shuntResistance);
   sysConfGroup.addItem(&maxCurrent);
+  sysConfGroup.addItem(&voltageCalibrationFactor);
+  sysConfGroup.addItem(&currentCalibrationFactor);
 
   shuntGroup.addItem(&battCapacity);
   shuntGroup.addItem(&chargeEfficiency);
@@ -347,6 +369,8 @@ void handleRoot()
   s += "<br><br><b>Config Values</b> <ul>";
   s += "<li>Shunt resistance  : " + String(gShuntResistancemR, 4) + " m&#8486;";
   s += "<li>Shunt max current : " + String(gMaxCurrentA, 3) + " A";
+  s += "<li>V calibration     : " + String(gVoltageCalibrationFactor, 4);
+  s += "<li>A calibration     : " + String(gCurrentCalibrationFactor, 4);
   s += "<li>Batt capacity     : " + String(gCapacityAh) + " Ah";
   s += "<li>Batt efficiency   : " + String(gChargeEfficiencyPercent) + " %";
   s += "<li>Min soc           : " + String(gMinPercent) + " %";
@@ -383,6 +407,8 @@ void handleRoot()
 
 void convertParams() {
     gShuntResistancemR = shuntResistance.value();
+    gVoltageCalibrationFactor = voltageCalibrationFactor.value();
+    gCurrentCalibrationFactor = currentCalibrationFactor.value();
     gMaxCurrentA = maxCurrent.value();
     gCapacityAh = battCapacity.value();
     gChargeEfficiencyPercent = chargeEfficiency.value();
@@ -414,6 +440,18 @@ bool formValidator(iotwebconf::WebRequestWrapper* webRequestWrapper)
     if (server.arg(shuntResistance.getId()).toFloat() <=0)
     {
         shuntResistance.errorMessage = "Shunt resistance has to be > 0";
+        result = false;
+    }
+
+    if (server.arg(voltageCalibrationFactor.getId()).toFloat() <=0)
+    {
+        voltageCalibrationFactor.errorMessage = "Voltage calibration factor has to be > 0";
+        result = false;
+    }
+
+    if (server.arg(currentCalibrationFactor.getId()).toFloat() <=0)
+    {
+        currentCalibrationFactor.errorMessage = "Current calibration factor has to be > 0";
         result = false;
     }
 

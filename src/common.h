@@ -17,6 +17,8 @@ extern uint16_t gFullVoltagemV;
 extern uint16_t gFullDelayS;
 extern float gShuntResistancemR;
 extern uint16_t gMaxCurrentA;
+extern float gVoltageCalibrationFactor;
+extern float gCurrentCalibrationFactor;
 extern uint16_t gModbusId;
 extern bool gSensorInitialized;
 extern bool gModbusEanbled;
