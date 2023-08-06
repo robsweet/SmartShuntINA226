@@ -14,7 +14,7 @@
 #elif defined(ESP32)
 #define PIN_SCL SCL
 #define PIN_SDA SDA
-#define PIN_INTERRUPT 7
+#define PIN_INTERRUPT 14
 #elif defined(ESP8266)
 #define PIN_SCL D1
 #define PIN_SDA D2
