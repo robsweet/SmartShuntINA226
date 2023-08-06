@@ -71,6 +71,9 @@ public:
     float averageCurrent() {
         return getAverageConsumption();
     }
+    float consumedAs() {
+        return stats.consumedAs;
+    }
 
     void setBatterySoc(float val);
     const Statistics& statistics() {return stats;}

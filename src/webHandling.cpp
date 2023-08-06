@@ -389,6 +389,7 @@ void handleRoot()
     s += "<ul> <li>Battery Voltage: " + String(gBattery.voltage()) + " V";
     s += "<li>Shunt current  : " + String(gBattery.current(),3) + " A";
     s += "<li>Avg consumption: " + String(gBattery.averageCurrent(),3) + " A";
+    s += "<li>Consumed: " + String(gBattery.consumedAs(),3) + " A";
     s += "<li>Battery soc    : " + String(gBattery.soc(),3);
     s += "<li>Time to go     : " + String(gBattery.tTg()) + " s";
     s += "<li>Battery full   : " + String(gBattery.isFull()?"true":"false");
