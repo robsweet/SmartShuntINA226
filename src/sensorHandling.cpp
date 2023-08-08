@@ -114,7 +114,7 @@ uint16_t translateSampleCount(ina226_averages_t value) {
 
 #ifdef DEBUG_SENSOR
 void checkConfig() {
-    SERIAL_DBG_DBG.print("Mode:                  ");
+    SERIAL_DBG.print("Mode:                  ");
     switch (ina.getMode()) {
         case INA226_MODE_POWER_DOWN:
         SERIAL_DBG.println("Power-Down");
