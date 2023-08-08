@@ -20,6 +20,7 @@
 
 #include "common.h"
 #include "statusHandling.h"
+#include "version.h"
 
 #define SOC_RESPONSE \
 "<!DOCTYPE HTML>\
@@ -400,6 +401,7 @@ void handleRoot()
   
   s += "<UL><LI>Go to <a href='config'>configure page</a> to change configuration.";
   s += "<LI>Go to <a href='setruntime'>runtime modification page</a> to change runtime data.</UL>";
+  s += "<p>Version "+ String(ins_smartshunt_version) +"</p>";
   s += "</body></html>\n";
 
   server.send(200, "text/html", s);
